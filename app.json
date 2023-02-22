@@ -28,6 +28,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow to access your photos.",
+          "savePhotosPermission": "Allow to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ]
+ 
   }
 }

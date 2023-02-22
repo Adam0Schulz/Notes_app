@@ -1,20 +1,65 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { notesRef, firebase } from './firebase/firebase';
+import { Note } from './firebase/models'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import Login from './components/Login';
+import NoteScreen from './components/Note';
+import NotesScreen from './components/Notes';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+export type StackParams = {
+  login: {}
+  note: {
+    note: firebase.firestore.DocumentData
+  }
+  notes: {}
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Stack = createNativeStackNavigator<StackParams>();
+
+
+export default function App() {
+
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#090909',
+          }
+        }}
+        initialRouteName='notes'
+      >
+        <Stack.Screen
+          name="login"
+          component={Login}
+          options={{
+            headerTitle: 'Login',
+            headerTintColor: 'white'
+          }}
+        />
+        <Stack.Screen
+          name="notes"
+          component={NotesScreen}
+          options={{
+            headerTitle: 'Notes',
+            headerTintColor: 'white'
+          }}
+        />
+        <Stack.Screen
+          name="note"
+          component={NoteScreen}
+          options={{
+            headerTitle: 'Note',
+            headerTintColor: 'white'
+          }}
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
