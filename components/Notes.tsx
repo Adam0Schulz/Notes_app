@@ -22,7 +22,7 @@ const Notes = () => {
     
     const addNote = async () => {
         const newNote: Note = {
-        text: 'hello content',
+        text: 'New Note',
         updatedAt: new Date()
         }
         await notesRef.add(newNote)
