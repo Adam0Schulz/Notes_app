@@ -8,11 +8,13 @@ import { Note } from "../firebase/models"
 import Card from "./Card"
 import { useNavigation } from "@react-navigation/core"
 import { useEffect } from "react"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { StackParams } from "../App"
 
 
 const Notes = () => {
 
-    const navigation = useNavigation()
+    const navigation = useNavigation<NativeStackNavigationProp<StackParams>>()
     const query = notesRef.orderBy('updatedAt').limit(25)
     const user = auth.currentUser
 
