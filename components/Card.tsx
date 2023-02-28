@@ -2,12 +2,12 @@ import { Button, Text, TouchableOpacity } from "react-native"
 import { Note } from "../firebase/models"
 import { useNavigation } from "@react-navigation/core"
 import { StackParams } from "../App"
-import {firebase, notesRef} from '../firebase/firebase'
+import {notesRef} from '../firebase/firebase'
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { firestore } from "../firebase/firebase"
+import { DocumentData } from "firebase/firestore"
 
 interface Props {
-    note: firebase.firestore.DocumentData
+    note: DocumentData
 }
 
 const Card = (props: Props) => {

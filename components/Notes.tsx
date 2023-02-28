@@ -1,6 +1,6 @@
 import { useAuthState } from "react-firebase-hooks/auth"
-import { Button, FlatList, Text, View } from "react-native"
-import { auth, notesRef, firestore, firebase } from "../firebase/firebase"
+import { Button, FlatList, Image, Text, View } from "react-native"
+import { auth, notesRef, db, noteConverter } from "../firebase/firebase"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { styles } from "../styles"
 import { useCollection, useCollectionData } from "react-firebase-hooks/firestore"
@@ -10,30 +10,32 @@ import { useNavigation } from "@react-navigation/core"
 import { useEffect } from "react"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { StackParams } from "../App"
+import { DocumentData, Firestore, addDoc, limit, orderBy, query, where } from "firebase/firestore"
+
 
 
 const Notes = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<StackParams>>()
-    const query = notesRef.orderBy('updatedAt').limit(25)
     const user = auth.currentUser
 
-    const [notes] = useCollectionData<firebase.firestore.DocumentData>(query, {idField: 'id'})
-    
+    const [notes] = useCollectionData<DocumentData>(query(notesRef.withConverter(noteConverter), orderBy("updatedAt"), limit(20)))
+
     const addNote = async () => {
         const newNote: Note = {
-        text: 'New Note',
-        updatedAt: new Date()
+            text: 'New Note',
+            updatedAt: new Date(),
+            imageURL: ''
         }
-        await notesRef.add(newNote)
+        await addDoc(notesRef, newNote)
     }
 
     useEffect(() => {
-        if(!user) {
+        if (!user) {
             navigation.navigate("login", {})
         }
     })
-  
+
 
     const handleLogout = () => {
         auth.signOut()
@@ -46,14 +48,12 @@ const Notes = () => {
                 <Button title="add a note" onPress={addNote}></Button>
                 <FlatList
                     data={notes}
-                    renderItem={({item}) => <Card note={item}/>}
+                    renderItem={({ item }) => <Card note={item} />}
                 ></FlatList>
                 <Button title="log out" onPress={handleLogout}></Button>
             </View>
         </SafeAreaView>
     )
 }
-
-Notes.propTypes = {}
 
 export default Notes

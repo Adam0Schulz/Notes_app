@@ -37,6 +37,12 @@
           "savePhotosPermission": "Allow to save photos.",
           "isAccessMediaLocationEnabled": true
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow this app to access your camera."
+        }
       ]
     ]
  

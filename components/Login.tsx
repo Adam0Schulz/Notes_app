@@ -1,11 +1,13 @@
 import { Text, TextInput, StyleSheet, SafeAreaView, View, Button } from "react-native"
-import { auth, firebase } from '../firebase/firebase'
+import { auth } from '../firebase/firebase'
 import { styles } from "../styles"
 import { useEffect, useState } from "react"
 import { useNavigation } from "@react-navigation/core"
 import { StackParams } from "../App"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useAuthState } from "react-firebase-hooks/auth"
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 
 
 const Login = () => {
@@ -17,7 +19,7 @@ const Login = () => {
   const user = auth.currentUser
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged((user: any) => {
       if (user) {
         navigation.navigate("notes", {})
       }
@@ -27,9 +29,9 @@ const Login = () => {
 
 
   const handleLogin = () => {
-    if(!user) {navigation.navigate("notes", {})}
-    auth.signInWithEmailAndPassword(credentials.email, credentials.password)
-      .catch(error => alert(error.message))
+    if (!user) { navigation.navigate("notes", {}) }
+    signInWithEmailAndPassword(auth, credentials.email, credentials.password)
+      .catch((error: any) => alert(error.message))
   }
 
   return (
@@ -40,12 +42,14 @@ const Login = () => {
           style={localStyle.textInput}
           multiline={false}
           placeholder="E-mail"
+          placeholderTextColor={"white"}
           onChangeText={(text) => setCredentials({ ...credentials, email: text })}
         ></TextInput>
         <TextInput
           style={localStyle.textInput}
           multiline={false}
           placeholder="password"
+          placeholderTextColor={"white"}
           secureTextEntry={true}
           onChangeText={(text) => setCredentials({ ...credentials, password: text })}
         ></TextInput>
@@ -60,7 +64,7 @@ const localStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.1)',
     color: 'white',
     padding: 15
   },

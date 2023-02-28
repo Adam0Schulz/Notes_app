@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { notesRef, firebase } from './firebase/firebase';
+import { notesRef } from './firebase/firebase';
 import { Note } from './firebase/models'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,11 +9,12 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import Login from './components/Login';
 import NoteScreen from './components/Note';
 import NotesScreen from './components/Notes';
+import { DocumentData } from 'firebase/firestore';
 
 export type StackParams = {
   login: {}
   note: {
-    note: firebase.firestore.DocumentData
+    note: DocumentData
   }
   notes: {}
 }
